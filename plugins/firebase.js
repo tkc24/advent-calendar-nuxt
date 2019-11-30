@@ -21,3 +21,10 @@ export const authProviders = {
 };
 
 export const auth = firebase.auth();
+
+const firebaseFunctions = firebase.app().functions();
+if (process.env.EMULATOR_ORIGIN) {
+  firebaseFunctions.emulatorOrigin = process.env.EMULATOR_ORIGIN;
+}
+
+export const functions = firebaseFunctions;
