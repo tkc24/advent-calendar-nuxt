@@ -82,5 +82,8 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  manifest: {
+    gcm_sender_id: "103953800507"
   }
 };

@@ -9,6 +9,7 @@ const config = {
   projectId: process.env.FB_PROJECTID,
   storageBucket: process.env.FB_STORAGE_BUCKET,
   messagingSenderId: process.env.FB_MESSAGING_SENDER_ID,
+  appId: process.env.FB_APP_ID,
   timestampsInSnapshots: true
 };
 if (!firebase.apps.length) {
@@ -28,3 +29,8 @@ if (process.env.EMULATOR_ORIGIN) {
 }
 
 export const functions = firebaseFunctions;
+
+const firebaseMessaging = firebase.messaging();
+firebaseMessaging.usePublicVapidKey(process.env.FB_PUBLIC_VAPID_KEY);
+
+export const messaging = firebaseMessaging;

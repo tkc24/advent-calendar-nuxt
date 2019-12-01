@@ -63,13 +63,85 @@
 </template>
 
 <script>
+import firebase from "firebase";
 import Logo from "~/components/Logo.vue";
 import VuetifyLogo from "~/components/VuetifyLogo.vue";
+import { messaging } from "~/plugins/firebase";
+const db = firebase.firestore();
 
 export default {
   components: {
     Logo,
     VuetifyLogo
+  },
+  created() {
+    firebase.auth().onAuthStateChanged(async user => {
+      try {
+        await messaging.requestPermission();
+        const currentToken = await messaging.getToken();
+        if (currentToken) {
+          this.updateUserFcmToken(user.uid, currentToken);
+        }
+      } catch (err) {
+        console.log("not", err);
+      }
+      messaging.onTokenRefresh(async () => {
+        try {
+          await messaging.requestPermission();
+          const currentToken = await messaging.getToken();
+          if (currentToken) {
+            this.updateUserFcmToken(user.uid, currentToken);
+          }
+        } catch (err) {
+          console.log("not", err);
+        }
+      });
+    });
+    // messaging
+    //   .requestPermission()
+    //   .then(function() {
+    //     // 通知許可
+    //     messaging
+    //       .getToken()
+    //       .then(function(currentToken) {
+    //         if (currentToken) {
+    //           this.updateUserFcmToken(currentToken);
+    //         }
+    //       })
+    //       .catch(function(err) {
+    //         console.log("not", err);
+    //       });
+    //   })
+    //   .catch(function(err) {
+    //     console.log("not", err);
+    //   });
+
+    // messaging.onTokenRefresh(() => {
+    //   messaging
+    //     .getToken()
+    //     .then(function(currentToken) {
+    //       if (currentToken) {
+    //         this.updateUserFcmToken(currentToken);
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log("Unable to retrieve refreshed token ", err);
+    //     });
+    // });
+    // });
+  },
+  methods: {
+    async updateUserFcmToken(uid, token) {
+      await db
+        .collection("users")
+        .doc(uid)
+        .set(
+          {
+            fcmToken: token
+          },
+          { merge: true }
+        );
+    }
   }
 };
 </script>
