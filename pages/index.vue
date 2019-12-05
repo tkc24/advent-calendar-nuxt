@@ -97,38 +97,6 @@ export default {
         }
       });
     });
-    // messaging
-    //   .requestPermission()
-    //   .then(function() {
-    //     // 通知許可
-    //     messaging
-    //       .getToken()
-    //       .then(function(currentToken) {
-    //         if (currentToken) {
-    //           this.updateUserFcmToken(currentToken);
-    //         }
-    //       })
-    //       .catch(function(err) {
-    //         console.log("not", err);
-    //       });
-    //   })
-    //   .catch(function(err) {
-    //     console.log("not", err);
-    //   });
-
-    // messaging.onTokenRefresh(() => {
-    //   messaging
-    //     .getToken()
-    //     .then(function(currentToken) {
-    //       if (currentToken) {
-    //         this.updateUserFcmToken(currentToken);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.log("Unable to retrieve refreshed token ", err);
-    //     });
-    // });
-    // });
   },
   methods: {
     async updateUserFcmToken(uid, token) {
